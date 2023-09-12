@@ -1,6 +1,6 @@
 #include "module.h"
 
 int ModuleFunc(){
-    int var = 10;
+    int var = 77;
     return var;
 }
