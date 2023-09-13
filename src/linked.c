@@ -79,29 +79,45 @@ void LinkedListSet (LinkedList_t* pList, int EntryIndex, LinkedData_t Val){
     }
 }
 
+static inline void LinkedListBypassEntry(LinkedList_t* pList,LinkedEntry_t* pEntry,int EntryIndex){
+    /*Set previous next to current next, unless first element, 
+    in which case set current next to first entry*/
+    if (EntryIndex != 0){
+        pEntry->pPrevious->pNext = pEntry->pNext;
+    } else {
+        pList->pFirst = pEntry->pNext;
+    }
+    /*If not last entry, set previous of next to current previous*/
+    if (EntryIndex < pList->EntriesNr-1){
+        pEntry->pNext->pPrevious = pEntry->pPrevious;
+    }
+    pList->EntriesNr--;
+}
+
 LinkedData_t LinkedListPop(LinkedList_t* pList, int EntryIndex){
 
     LinkedEntry_t* pEntry;  
     LinkedData_t ReturnData = LINKED_ERROR_CODE;
 
     if (VALID_LIST(pList) && NON_EMPTY_LIST(pList) && VALID_INDEX(pList,EntryIndex)){
-        /*Set previous next to current next, unless first element, 
-        in which case set current next to first entry*/
         pEntry = GetEntryPtr(pList, EntryIndex);
-        if (EntryIndex != 0){
-            pEntry->pPrevious->pNext = pEntry->pNext;
-        } else {
-            pList->pFirst = pEntry->pNext;
-        }
-        /*If not last entry, set previous of next to current previous*/
-        if (EntryIndex < pList->EntriesNr-1){
-            pEntry->pNext->pPrevious = pEntry->pPrevious;
-        }
+        LinkedListBypassEntry(pList,pEntry,EntryIndex);
         ReturnData = pEntry->Data;
-        pList->EntriesNr--;
         free(pEntry); 
     }    
     return ReturnData;
+}
+
+void LinkedListPopNoReturn(LinkedList_t* pList, int EntryIndex){
+
+    LinkedEntry_t* pEntry;  
+    LinkedData_t ReturnData = LINKED_ERROR_CODE;
+
+    if (VALID_LIST(pList) && NON_EMPTY_LIST(pList) && VALID_INDEX(pList,EntryIndex)){
+        pEntry = GetEntryPtr(pList, EntryIndex);
+        LinkedListBypassEntry(pList,pEntry,EntryIndex);
+        free(pEntry); 
+    }
 }
 
 int LinkedListGetEntriesNr(LinkedList_t* pList){
@@ -115,6 +131,15 @@ LinkedData_t LinkedListPopEnd(LinkedList_t* pList){
 LinkedData_t LinkedListPopStart(LinkedList_t* pList){
    return LinkedListPop(pList, 0); 
 }
+
+void LinkedListPopEndNoReturn(LinkedList_t* pList){
+   LinkedListPopNoReturn(pList, pList->EntriesNr-1); 
+}
+
+void LinkedListPopStartNoReturn(LinkedList_t* pList){
+   LinkedListPop(pList, 0); 
+}
+
 
 void LinkedListClear(LinkedList_t* pList){
     LinkedEntry_t* pCurrent;
