@@ -36,6 +36,8 @@ int main (){
   printf("Element 1: %d \n",LinkedListGet(&MyLinkedList, 1));
   printf("Element 2: %d \n",LinkedListGet(&MyLinkedList, 2));
   
+  printf("Element 2 (via pointer): %d \n",*LinkedListGetPtr(&MyLinkedList, 2));
+
   printf("Clearing list \n");
   LinkedListClear(&MyLinkedList);
 

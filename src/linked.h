@@ -22,3 +22,5 @@ LinkedData_t LinkedListPopEnd(LinkedList_t* pList);
 LinkedData_t LinkedListPopStart(LinkedList_t* pList);
 void LinkedListSet (LinkedList_t* pList, int EntryIndex, LinkedData_t Val);
 void LinkedListClear(LinkedList_t* pList);
+
+LinkedData_t* LinkedListGetPtr (LinkedList_t* pList, int EntryIndex);

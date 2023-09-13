@@ -59,6 +59,17 @@ LinkedData_t LinkedListGet (LinkedList_t* pList, int EntryIndex){
     return ReturnData;
 }
 
+LinkedData_t* LinkedListGetPtr (LinkedList_t* pList, int EntryIndex){  
+    LinkedEntry_t* pEntry;
+    LinkedData_t* pData = NULL;
+
+    if (VALID_LIST(pList) && NON_EMPTY_LIST(pList) && VALID_INDEX(pList,EntryIndex)){
+        pEntry = GetEntryPtr(pList, EntryIndex);
+        pData = &(pEntry->Data);
+    }
+    return pData;
+}
+
 void LinkedListSet (LinkedList_t* pList, int EntryIndex, LinkedData_t Val){  
     LinkedEntry_t* pEntry;
 
