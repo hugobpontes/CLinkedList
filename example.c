@@ -20,6 +20,9 @@ int main (){
   printf("Element 1: %d \n",LinkedListGet(&MyLinkedList, 1));
   printf("Element 2: %d \n",LinkedListGet(&MyLinkedList, 2));
 
+  printf("Setting Element 2: %d \n",99);
+  LinkedListSet(&MyLinkedList,2,99);
+
   printf("Popping Element 1: %d \n",LinkedListPop(&MyLinkedList, 1));
   printf("Popping End: %d \n",LinkedListPopEnd(&MyLinkedList));
   printf("Popping Start: %d \n",LinkedListPopStart(&MyLinkedList));

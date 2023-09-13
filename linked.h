@@ -20,3 +20,4 @@ LinkedData_t LinkedListPop(LinkedList_t* pList, int EntryIndex);
 int LinkListGetElements(LinkedList_t* pList);
 LinkedData_t LinkedListPopEnd(LinkedList_t* pList);
 LinkedData_t LinkedListPopStart(LinkedList_t* pList);
+void LinkedListSet (LinkedList_t* pList, int EntryIndex, LinkedData_t Val);

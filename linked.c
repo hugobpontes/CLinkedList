@@ -52,13 +52,20 @@ LinkedData_t LinkedListGet (LinkedList_t* pList, int EntryIndex){
     LinkedEntry_t* pEntry;
     LinkedData_t ReturnData = LINKED_ERROR_CODE;
 
-    int CurrentIdx = 0; 
-
     if (VALID_LIST(pList) && NON_EMPTY_LIST(pList) && VALID_INDEX(pList,EntryIndex)){
         pEntry = GetEntryPtr(pList, EntryIndex);
         ReturnData = pEntry->Data;
     }
     return ReturnData;
+}
+
+void LinkedListSet (LinkedList_t* pList, int EntryIndex, LinkedData_t Val){  
+    LinkedEntry_t* pEntry;
+
+    if (VALID_LIST(pList) && NON_EMPTY_LIST(pList) && VALID_INDEX(pList,EntryIndex)){
+        pEntry = GetEntryPtr(pList, EntryIndex);
+        pEntry->Data = Val;
+    }
 }
 
 LinkedData_t LinkedListPop(LinkedList_t* pList, int EntryIndex){
@@ -96,5 +103,4 @@ LinkedData_t LinkedListPopStart(LinkedList_t* pList){
 }
 
 //set
-//remove (just calls pop at max index)
 //clear (delete and free all elements)
