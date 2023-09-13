@@ -59,6 +59,31 @@ LinkedData_t LinkedListGet (LinkedList_t* pList, int EntryIndex){
     return ReturnData;
 }
 
+LinkedData_t LinkedListPop(LinkedList_t* pList, int EntryIndex){
+
+    LinkedEntry_t* pEntry;  
+    LinkedData_t ReturnData = 0;
+
+    if (pList != NULL && pList->pFirst != NULL){
+        pEntry = GetEntryPtr(pList, EntryIndex);
+        if (EntryIndex != 0){
+            pEntry->pPrevious->pNext = pEntry->pNext;
+        } else {
+            pList->pFirst = pEntry->pNext;
+        }
+        if (EntryIndex >= pList->Elements-1){
+        pEntry->pNext->pPrevious = pEntry->pPrevious;
+        }
+        ReturnData = pEntry->Data;
+        pList->Elements--;
+        free(pEntry); 
+    }    
+    return ReturnData;
+}
+
+int LinkListGetElements(LinkedList_t* pList){
+    return pList->Elements;
+}
 //set
 //remove (just calls pop at max index)
 //pop
