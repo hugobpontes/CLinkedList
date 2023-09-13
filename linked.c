@@ -86,7 +86,15 @@ LinkedData_t LinkedListPop(LinkedList_t* pList, int EntryIndex){
 int LinkListGetElements(LinkedList_t* pList){
     return pList->Elements;
 }
+
+LinkedData_t LinkedListPopEnd(LinkedList_t* pList){
+   return LinkedListPop(pList, pList->Elements-1); 
+}
+
+LinkedData_t LinkedListPopStart(LinkedList_t* pList){
+   return LinkedListPop(pList, 0); 
+}
+
 //set
 //remove (just calls pop at max index)
-//pop
 //clear (delete and free all elements)
