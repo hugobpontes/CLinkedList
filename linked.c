@@ -5,7 +5,7 @@
 
 #define VALID_LIST(pList) (pList != NULL)
 #define NON_EMPTY_LIST(pList) (pList->pFirst != NULL)
-#define VALID_INDEX(pList,Idx) (EntryIndex >= 0 && EntryIndex < pList->Elements)
+#define VALID_INDEX(pList,Idx) (EntryIndex >= 0 && EntryIndex < pList->EntriesNr)
 
 static inline void CreateLinkedEntry(LinkedEntry_t** ppEntry, LinkedData_t Val, LinkedEntry_t* pPrevious){
         *ppEntry = malloc(sizeof(LinkedEntry_t));
@@ -34,16 +34,16 @@ void LinkedListAdd(LinkedList_t* pList, LinkedData_t Val){
         if (pList->pFirst == NULL){
             CreateLinkedEntry(&pList->pFirst,Val,NULL);
         } else {
-            pLast = GetEntryPtr(pList, pList->Elements-1);
+            pLast = GetEntryPtr(pList, pList->EntriesNr-1);
             CreateLinkedEntry(&pLast->pNext,Val,pLast);
         }
-        pList->Elements++;
+        pList->EntriesNr++;
     }
 }
 
 void LinkedListInit(LinkedList_t* pList){
     if (pList!= NULL){
-        pList->Elements = 0;
+        pList->EntriesNr = 0;
         pList->pFirst = NULL;
     }
 }
@@ -74,33 +74,53 @@ LinkedData_t LinkedListPop(LinkedList_t* pList, int EntryIndex){
     LinkedData_t ReturnData = LINKED_ERROR_CODE;
 
     if (VALID_LIST(pList) && NON_EMPTY_LIST(pList) && VALID_INDEX(pList,EntryIndex)){
+        /*Set previous next to current next, unless first element, 
+        in which case set current next to first entry*/
         pEntry = GetEntryPtr(pList, EntryIndex);
         if (EntryIndex != 0){
             pEntry->pPrevious->pNext = pEntry->pNext;
         } else {
             pList->pFirst = pEntry->pNext;
         }
-        if (EntryIndex < pList->Elements-1){
+        /*If not last entry, set previous of next to current previous*/
+        if (EntryIndex < pList->EntriesNr-1){
             pEntry->pNext->pPrevious = pEntry->pPrevious;
         }
         ReturnData = pEntry->Data;
-        pList->Elements--;
+        pList->EntriesNr--;
         free(pEntry); 
     }    
     return ReturnData;
 }
 
-int LinkListGetElements(LinkedList_t* pList){
-    return pList->Elements;
+int LinkedListGetEntriesNr(LinkedList_t* pList){
+    return pList->EntriesNr;
 }
 
 LinkedData_t LinkedListPopEnd(LinkedList_t* pList){
-   return LinkedListPop(pList, pList->Elements-1); 
+   return LinkedListPop(pList, pList->EntriesNr-1); 
 }
 
 LinkedData_t LinkedListPopStart(LinkedList_t* pList){
    return LinkedListPop(pList, 0); 
 }
 
-//set
-//clear (delete and free all elements)
+void LinkedListClear(LinkedList_t* pList){
+    LinkedEntry_t* pCurrent;
+    LinkedEntry_t* pTemp;
+    int CurrentIdx = 0;
+    int EntriesToClear;
+
+    if (VALID_LIST(pList) && NON_EMPTY_LIST(pList)){
+        pCurrent = pList->pFirst;  
+        EntriesToClear = pList->EntriesNr;
+        for (CurrentIdx = 0;CurrentIdx<EntriesToClear;CurrentIdx++)
+        {     
+            pTemp = pCurrent;
+            pCurrent = pCurrent->pNext;
+            free(pTemp);
+
+            pList->EntriesNr--;
+        }
+    }
+}

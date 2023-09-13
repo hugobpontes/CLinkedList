@@ -14,11 +14,14 @@ int main (){
   LinkedListAdd(&MyLinkedList, 66);
   LinkedListAdd(&MyLinkedList,77);
 
-  printf("N of Elements: %d \n", LinkListGetElements(&MyLinkedList));
+  printf("EntriesNr: %d \n", LinkedListGetEntriesNr(&MyLinkedList));
 
   printf("Element 0: %d \n",LinkedListGet(&MyLinkedList, 0));
   printf("Element 1: %d \n",LinkedListGet(&MyLinkedList, 1));
   printf("Element 2: %d \n",LinkedListGet(&MyLinkedList, 2));
+  printf("Element 3: %d \n",LinkedListGet(&MyLinkedList, 3));
+  printf("Element 4: %d \n",LinkedListGet(&MyLinkedList, 4));
+  printf("Element 5: %d \n",LinkedListGet(&MyLinkedList, 5));
 
   printf("Setting Element 2: %d \n",99);
   LinkedListSet(&MyLinkedList,2,99);
@@ -27,11 +30,16 @@ int main (){
   printf("Popping End: %d \n",LinkedListPopEnd(&MyLinkedList));
   printf("Popping Start: %d \n",LinkedListPopStart(&MyLinkedList));
 
-  printf("N of Elements: %d \n", LinkListGetElements(&MyLinkedList));
+  printf("EntriesNr: %d \n", LinkedListGetEntriesNr(&MyLinkedList));
 
   printf("Element 0: %d \n",LinkedListGet(&MyLinkedList, 0));
   printf("Element 1: %d \n",LinkedListGet(&MyLinkedList, 1));
   printf("Element 2: %d \n",LinkedListGet(&MyLinkedList, 2));
   
+  printf("Clearing list \n");
+  LinkedListClear(&MyLinkedList);
+
+  printf("EntriesNr: %d \n", LinkedListGetEntriesNr(&MyLinkedList));
+
   return 0;
 }
