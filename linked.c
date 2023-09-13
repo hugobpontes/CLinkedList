@@ -8,42 +8,53 @@ static inline void CreateLinkedEntry(LinkedEntry_t** ppEntry, LinkedData_t Val, 
         (*ppEntry)->pPrevious = pPrevious;    
 } 
 
-void LinkedListAdd(LinkedList_t* pList, LinkedData_t Val){
-    LinkedEntry_t* pCurrent;
-
-    if (pList->pFirst == NULL){
-        CreateLinkedEntry(&pList->pFirst,Val,NULL);
-    } else {
-        pCurrent = pList->pFirst;  
+static inline LinkedEntry_t* GetEntryPtr(LinkedList_t* pList, int EntryIndex){
         
-        while (pCurrent->pNext != NULL){
+    LinkedEntry_t* pCurrent;
+    int ReturnIdx;
+    int CurrentIdx = 0;
+
+    pCurrent = pList->pFirst;  
+
+    if (EntryIndex < pList->Elements){
+        for (CurrentIdx = 0;CurrentIdx<EntryIndex;CurrentIdx++)
+        {
             pCurrent = pCurrent->pNext;
         }
-        CreateLinkedEntry(&pCurrent->pNext,Val,pCurrent);
     }
-    pList->Elements++;
+
+    return pCurrent;
+}
+
+void LinkedListAdd(LinkedList_t* pList, LinkedData_t Val){
+    LinkedEntry_t* pLast;
+    if (pList!= NULL){
+        if (pList->pFirst == NULL){
+            CreateLinkedEntry(&pList->pFirst,Val,NULL);
+        } else {
+            pLast = GetEntryPtr(pList, pList->Elements-1);
+            CreateLinkedEntry(&pLast->pNext,Val,pLast);
+        }
+        pList->Elements++;
+    }
 }
 
 void LinkedListInit(LinkedList_t* pList){
-    pList->Elements = 0;
-    pList->pFirst = NULL;
+    if (pList!= NULL){
+        pList->Elements = 0;
+        pList->pFirst = NULL;
+    }
 }
 
-LinkedData_t LinkedListGet (LinkedList_t* pList, int Index){  
-    LinkedEntry_t* pCurrent;
+LinkedData_t LinkedListGet (LinkedList_t* pList, int EntryIndex){  
+    LinkedEntry_t* pEntry;
     LinkedData_t ReturnData = 0;
+
     int CurrentIdx = 0; 
 
-    if (pList->pFirst != NULL){
-        pCurrent = pList->pFirst;  
-
-        if (Index < pList->Elements){
-            for (CurrentIdx = 0;CurrentIdx<Index;CurrentIdx++)
-            {
-                pCurrent = pCurrent->pNext;
-            }
-            ReturnData = pCurrent->Data;
-        }
+    if (pList != NULL && pList->pFirst != NULL){
+        pEntry = GetEntryPtr(pList, EntryIndex);
+        ReturnData = pEntry->Data;
     }
     return ReturnData;
 }
