@@ -17,13 +17,12 @@ int main (){
   printf("Element 1: %d \n",LinkedListGet(&MyLinkedList, 1));
   printf("Element 2: %d \n",LinkedListGet(&MyLinkedList, 2));
 
-  printf("Popping Element 1: %d \n",LinkedListPop(&MyLinkedList, 2));
+  printf("Popping Element 1: %d \n",LinkedListPop(&MyLinkedList, 1));
 
   printf("N of Elements: %d \n", LinkListGetElements(&MyLinkedList));
 
-  printf("Element 0: %d \n",LinkedListGet(&MyLinkedList, 0));
+  printf("Element 0: %d \n",LinkedListGet(&MyLinkedList, -7));
   printf("Element 1: %d \n",LinkedListGet(&MyLinkedList, 1));
   
-
   return 0;
 }
