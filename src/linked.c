@@ -65,16 +65,7 @@ static inline void LinkedListBypassEntry(LinkedList_t* pList,LinkedEntry_t* pEnt
 * @param Val Data to be stored in the new entry
 */
 void LinkedListAdd(LinkedList_t* pList, LinkedData_t Val){
-    LinkedEntry_t* pLast;
-    if (VALID_PTR(pList)){
-        if (pList->pFirst == NULL){
-            CreateLinkedEntry(&pList->pFirst,&Val,NULL);
-        } else {
-            pLast = GetEntryPtr(pList, pList->EntriesNr-1);
-            CreateLinkedEntry(&pLast->pNext,&Val,pLast);
-        }
-        pList->EntriesNr++;
-    }
+    LinkedListPtrAdd(pList,&Val);
 }
 /* 
 * @brief Adds a new entry at the end of the linked list via pointer
@@ -137,12 +128,7 @@ LinkedData_t* LinkedListGetPtr (LinkedList_t* pList, int EntryIndex){
 }
 
 void LinkedListSet (LinkedList_t* pList, int EntryIndex, LinkedData_t Val){  
-    LinkedEntry_t* pEntry;
-
-    if (VALID_PTR(pList) && NON_EMPTY_LIST(pList) && VALID_INDEX(pList,EntryIndex)){
-        pEntry = GetEntryPtr(pList, EntryIndex);
-        pEntry->Data = Val;
-    }
+    LinkedListPtrSet(pList,EntryIndex,&Val);
 }
 
 void LinkedListPtrSet(LinkedList_t* pList, int EntryIndex, LinkedData_t* pVal){  
