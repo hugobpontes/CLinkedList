@@ -23,17 +23,26 @@ void LinkedListInsertEnd(LinkedList_t* pList, LinkedData_t* pData);
 
 void LinkedListGet (LinkedList_t* pList, LinkedData_t* pData, int EntryIndex);
 void LinkedListSet (LinkedList_t* pList, LinkedData_t* pData, int EntryIndex);
+
+void LinkedListPop(LinkedList_t* pList, LinkedData_t* pData, int EntryIndex);
+void LinkedListPopStart(LinkedList_t* pList, LinkedData_t* pData);
+void LinkedListPopEnd(LinkedList_t* pList, LinkedData_t* pData);
+
+void LinkedListRemove(LinkedList_t* pList, int EntryIndex);
+void LinkedListRemoveStart(LinkedList_t* pList);
+void LinkedListRemoveEnd(LinkedList_t* pList);
+
 //(all pointer)
 //insert start -done
 //insert -done
 //insert end
-//pop start
-//pop 
-//pop end
+//pop start -done
+//pop -done
+//pop end -done
 //remove start
 //remove 
 //remove end
 
-//set
+//set -done
 //get- done
 

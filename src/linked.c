@@ -34,7 +34,7 @@ static inline LinkedEntry_t* GetEntryPtr(LinkedList_t* pList, int EntryIndex){
     return pCurrent;
 }
 
-static inline void LinkedListBypassEntry(LinkedList_t* pList,int EntryIndex){
+static inline LinkedEntry_t* LinkedListBypassEntry(LinkedList_t* pList,int EntryIndex){
     LinkedEntry_t* pEntry;
 
     pEntry =  GetEntryPtr(pList,EntryIndex);
@@ -49,7 +49,8 @@ static inline void LinkedListBypassEntry(LinkedList_t* pList,int EntryIndex){
     if (EntryIndex < pList->EntriesNr-1){
         pEntry->pNext->pPrevious = pEntry->pPrevious;
     }
-    pList->EntriesNr--;
+
+    return pEntry;
 }
 
 static inline void LinkedListInsertEntry(LinkedList_t* pList,LinkedEntry_t* pNewEntry,int EntryIndex){
@@ -99,7 +100,7 @@ static inline void LinkedListInsertEntry(LinkedList_t* pList,LinkedEntry_t* pNew
 * @param pList Pointer to the linked list to be initialized
 */
 void LinkedListInit(LinkedList_t* pList){
-    if (pList!= NULL){
+    if (VALID_PTR(pList)){
         pList->EntriesNr = 0;
         pList->pFirst = NULL;
     }
@@ -162,3 +163,38 @@ void LinkedListSet (LinkedList_t* pList, LinkedData_t* pData, int EntryIndex){
     }
 }
 
+void LinkedListPop(LinkedList_t* pList, LinkedData_t* pData, int EntryIndex){
+    LinkedEntry_t* pEntry;
+
+    if (VALID_PTR(pList) && NON_EMPTY_LIST(pList) && VALID_PTR(pData) && ENTRY_IDX_EXISTS(pList,EntryIndex)){
+        pEntry = LinkedListBypassEntry(pList,EntryIndex);
+        *pData = pEntry->Data;
+        free(pEntry); 
+        pList->EntriesNr--;
+    }    
+}
+
+void LinkedListPopStart(LinkedList_t* pList, LinkedData_t* pData){
+   LinkedListPop(pList,pData,0); 
+}
+void LinkedListPopEnd(LinkedList_t* pList, LinkedData_t* pData){
+   LinkedListPop(pList,pData,pList->EntriesNr-1); 
+}
+
+void LinkedListRemove(LinkedList_t* pList, int EntryIndex){
+    LinkedEntry_t* pEntry;
+
+    if (VALID_PTR(pList) && NON_EMPTY_LIST(pList) && ENTRY_IDX_EXISTS(pList,EntryIndex)){
+        pEntry = LinkedListBypassEntry(pList,EntryIndex);
+        free(pEntry); 
+        pList->EntriesNr--;
+    }    
+}
+
+void LinkedListRemoveStart(LinkedList_t* pList){
+   LinkedListRemove(pList,0); 
+}
+
+void LinkedListRemoveEnd(LinkedList_t* pList){
+   LinkedListRemove(pList,pList->EntriesNr-1); 
+}
