@@ -5,16 +5,17 @@
 void PrintList(LinkedList_t* pList){
   printf("List: ");
   LinkedData_t PrintVal;
-  for (int idx = 0;idx<pList->EntriesNr;idx++){
+  int EntriesNr = pList->EntriesNr;
+  for (int idx = 0;idx<EntriesNr;idx++){
     LinkedListGet(pList,&PrintVal,idx);
     printf("[%d]",PrintVal);
   }
-  printf("\n");
+  printf("(%d Elements)\n",LinkedListGetEntriesNr(pList));
 }
 
 int main (){
 
-
+  printf("DEBUG: Initializing list \n");
   LinkedList_t MyLinkedList;
   LinkedListInit(&MyLinkedList);
 
@@ -85,6 +86,18 @@ int main (){
 
   printf("DEBUG: Inserting 7 at index 9 (should do nothing) \n");
   LinkedListInsert(&MyLinkedList,&v[7],9);
+  PrintList(&MyLinkedList);
+
+  printf("DEBUG: Repeating initial insertion to have something to clear \n");
+  LinkedListInsertEnd(&MyLinkedList,&v[0]);
+  LinkedListInsertEnd(&MyLinkedList,&v[1]);
+  LinkedListInsertEnd(&MyLinkedList,&v[2]);
+  LinkedListInsertEnd(&MyLinkedList,&v[3]);
+  LinkedListInsertEnd(&MyLinkedList,&v[4]);
+  PrintList(&MyLinkedList);
+
+  printf("DEBUG: Clearing list \n");
+  LinkedListClear(&MyLinkedList);
   PrintList(&MyLinkedList);
 
   printf("DEBUG: Repeating initial insertion just to finish with something on list :) \n");

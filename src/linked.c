@@ -123,6 +123,7 @@ void LinkedListClear(LinkedList_t* pList){
 
             pList->EntriesNr--;
         }
+        pList->pFirst = NULL;
     }
 }
 int LinkedListGetEntriesNr(LinkedList_t* pList){
