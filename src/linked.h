@@ -29,3 +29,5 @@ void LinkedListPopNoReturn(LinkedList_t* pList, int EntryIndex);
 LinkedData_t* LinkedListGetPtr (LinkedList_t* pList, int EntryIndex);
 void LinkedListPopEndNoReturn(LinkedList_t* pList);
 void LinkedListPopStartNoReturn(LinkedList_t* pList);
+void LinkedListPtrSet(LinkedList_t* pList, int EntryIndex, LinkedData_t* pVal);
+void LinkedListPtrAdd(LinkedList_t* pList, LinkedData_t* pVal);

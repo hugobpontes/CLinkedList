@@ -7,9 +7,11 @@ int main (){
   LinkedList_t MyLinkedList;
   LinkedListInit(&MyLinkedList);
 
+  LinkedData_t v33 = 33;
+
   LinkedListAdd(&MyLinkedList, 11);
   LinkedListAdd(&MyLinkedList, 22);
-  LinkedListAdd(&MyLinkedList,33);
+  LinkedListPtrAdd(&MyLinkedList,&v33);
   LinkedListAdd(&MyLinkedList, 55);
   LinkedListAdd(&MyLinkedList, 66);
   LinkedListAdd(&MyLinkedList,77);
