@@ -22,6 +22,7 @@ void LinkedListInsertStart(LinkedList_t* pList, LinkedData_t* pData);
 void LinkedListInsertEnd(LinkedList_t* pList, LinkedData_t* pData);
 
 void LinkedListGet (LinkedList_t* pList, LinkedData_t* pData, int EntryIndex);
+void LinkedListSet (LinkedList_t* pList, LinkedData_t* pData, int EntryIndex);
 //(all pointer)
 //insert start -done
 //insert -done

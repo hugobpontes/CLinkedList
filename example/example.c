@@ -40,5 +40,9 @@ int main (){
   LinkedListInsert(&MyLinkedList,&v[9],4);
   PrintList(&MyLinkedList);
 
+  printf("DEBUG: Setting idx 4 to 0 \n");
+  LinkedListSet(&MyLinkedList,&v[0],4);
+  PrintList(&MyLinkedList);
+
   return 0;
 }

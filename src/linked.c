@@ -152,3 +152,13 @@ void LinkedListGet (LinkedList_t* pList, LinkedData_t* pData, int EntryIndex){
         *pData = pEntry->Data;
     }
 }
+
+void LinkedListSet (LinkedList_t* pList, LinkedData_t* pData, int EntryIndex){  
+    LinkedEntry_t* pEntry;
+
+    if (VALID_PTR(pList) && VALID_PTR(pData) && NON_EMPTY_LIST(pList) && ENTRY_IDX_EXISTS(pList,EntryIndex)){
+        pEntry = GetEntryPtr(pList, EntryIndex);
+        pEntry->Data = *pData;
+    }
+}
+
