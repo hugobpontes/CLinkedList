@@ -17,17 +17,22 @@ void LinkedListInit(LinkedList_t* pList);
 int LinkedListGetEntriesNr(LinkedList_t* pList);
 void LinkedListClear(LinkedList_t* pList);
 
-void LinkedListAdd(LinkedList_t* pList, LinkedData_t Val);
-void LinkedListSet (LinkedList_t* pList, int EntryIndex, LinkedData_t Val);
+void LinkedListInsert(LinkedList_t* pList, LinkedData_t* pData,int EntryIndex);
+void LinkedListInsertStart(LinkedList_t* pList, LinkedData_t* pData);
+void LinkedListInsertEnd(LinkedList_t* pList, LinkedData_t* pData);
 
-LinkedData_t LinkedListGet (LinkedList_t* pList, int EntryIndex);
-LinkedData_t LinkedListPop(LinkedList_t* pList, int EntryIndex);
-LinkedData_t LinkedListPopEnd(LinkedList_t* pList);
-LinkedData_t LinkedListPopStart(LinkedList_t* pList);
+void LinkedListGet (LinkedList_t* pList, LinkedData_t* pData, int EntryIndex);
+//(all pointer)
+//insert start -done
+//insert -done
+//insert end
+//pop start
+//pop 
+//pop end
+//remove start
+//remove 
+//remove end
 
-void LinkedListPopNoReturn(LinkedList_t* pList, int EntryIndex);
-LinkedData_t* LinkedListGetPtr (LinkedList_t* pList, int EntryIndex);
-void LinkedListPopEndNoReturn(LinkedList_t* pList);
-void LinkedListPopStartNoReturn(LinkedList_t* pList);
-void LinkedListPtrSet(LinkedList_t* pList, int EntryIndex, LinkedData_t* pVal);
-void LinkedListPtrAdd(LinkedList_t* pList, LinkedData_t* pVal);
+//set
+//get- done
+

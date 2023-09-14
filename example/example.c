@@ -1,51 +1,44 @@
 #include <stdio.h>
 #include "linked.h"
 
+
+void PrintList(LinkedList_t* pList){
+  printf("List: ");
+  LinkedData_t PrintVal;
+  for (int idx = 0;idx<pList->EntriesNr;idx++){
+    LinkedListGet(pList,&PrintVal,idx);
+    printf("[%d]",PrintVal);
+  }
+  printf("\n");
+}
+
 int main (){
 
 
   LinkedList_t MyLinkedList;
   LinkedListInit(&MyLinkedList);
 
-  LinkedData_t v33 = 33;
+  LinkedData_t v[10] = {0,1,2,3,4,5,6,7,8,9};
 
-  LinkedListAdd(&MyLinkedList, 11);
-  LinkedListAdd(&MyLinkedList, 22);
-  LinkedListPtrAdd(&MyLinkedList,&v33);
-  LinkedListAdd(&MyLinkedList, 55);
-  LinkedListAdd(&MyLinkedList, 66);
-  LinkedListAdd(&MyLinkedList,77);
+  LinkedData_t GetVal;
 
-  printf("EntriesNr: %d \n", LinkedListGetEntriesNr(&MyLinkedList));
+  printf("DEBUG: Inserting 0,1,2 at end \n");
+  LinkedListInsertEnd(&MyLinkedList,&v[0]);
+  LinkedListInsertEnd(&MyLinkedList,&v[1]);
+  LinkedListInsertEnd(&MyLinkedList,&v[2]);
+  PrintList(&MyLinkedList);
 
-  printf("Element 0: %d \n",LinkedListGet(&MyLinkedList, 0));
-  printf("Element 1: %d \n",LinkedListGet(&MyLinkedList, 1));
-  printf("Element 2: %d \n",LinkedListGet(&MyLinkedList, 2));
-  printf("Element 3: %d \n",LinkedListGet(&MyLinkedList, 3));
-  printf("Element 4: %d \n",LinkedListGet(&MyLinkedList, 4));
-  printf("Element 5: %d \n",LinkedListGet(&MyLinkedList, 5));
+  printf("DEBUG: Inserting 7 at end \n");
+  LinkedListInsertEnd(&MyLinkedList,&v[7]);
+  PrintList(&MyLinkedList);
 
-  printf("Setting Element 2: 99 \n");
-  LinkedListSet(&MyLinkedList,2,99);
-  printf("Setting Element 5: 33 \n");
-  LinkedListPtrSet(&MyLinkedList,5,&v33);
+  printf("DEBUG: Inserting 8 at start \n");
+  LinkedListInsertStart(&MyLinkedList,&v[8]);
+  PrintList(&MyLinkedList);
 
-  printf("Popping Element 1: %d \n",LinkedListPop(&MyLinkedList, 1));
-  printf("Popping End: %d \n",LinkedListPopEnd(&MyLinkedList));
-  printf("Popping Start: %d \n",LinkedListPopStart(&MyLinkedList));
-
-  printf("EntriesNr: %d \n", LinkedListGetEntriesNr(&MyLinkedList));
-
-  printf("Element 0: %d \n",LinkedListGet(&MyLinkedList, 0));
-  printf("Element 1: %d \n",LinkedListGet(&MyLinkedList, 1));
-  printf("Element 2: %d \n",LinkedListGet(&MyLinkedList, 2));
-  
-  printf("Element 2 (via pointer): %d \n",*LinkedListGetPtr(&MyLinkedList, 2));
-
-  printf("Clearing list \n");
-  LinkedListClear(&MyLinkedList);
-
-  printf("EntriesNr: %d \n", LinkedListGetEntriesNr(&MyLinkedList));
+  printf("DEBUG: Inserting 9 at idx 4 \n");
+  LinkedListInsert(&MyLinkedList,&v[9],4);
+  PrintList(&MyLinkedList);
 
   return 0;
 }
