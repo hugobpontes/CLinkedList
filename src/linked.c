@@ -3,34 +3,34 @@
 
 #define VALID_PTR(p) (p != NULL)
 #define NON_EMPTY_LIST(pList) (pList->pFirst != NULL)
-#define ENTRY_EXISTS(pList,Idx) (EntryIndex >= 0 && EntryIndex < pList->EntriesNr)
-#define ENTRY_IS_NEW_AT_END(pList,Idx) (EntryIndex == pList->EntriesNr)
+#define NODE_EXISTS(pList,Idx) (NodeIndex >= 0 && NodeIndex < pList->NodesNr)
+#define NODE_IS_NEW_AT_END(pList,Idx) (NodeIndex == pList->NodesNr)
 
-#define ENTRY_IS_AT_START(pEntry) (pEntry->pPrevious == NULL)
+#define NODE_IS_AT_START(pNode) (pNode->pPrevious == NULL)
 /* 
-* @brief Creates new linked list entry with input data and empty pointers
-* @param ppEntry Pointer to pointer that will point to new entry
-* @param pVal Pointer to the data to be assigned to new entry
+* @brief Creates new linked list node with input data and empty pointers
+* @param ppNode Pointer to pointer that will point to new node
+* @param pVal Pointer to the data to be assigned to new node
 */
-static inline void CreateLinkedEntry(LinkedEntry_t** ppEntry, LinkedData_t* pVal){
-        *ppEntry = malloc(sizeof(LinkedEntry_t));
-        (*ppEntry)->Data = *pVal;
-        (*ppEntry)->pNext=NULL;
-        (*ppEntry)->pPrevious=NULL;
+static inline void CreateLinkedNode(LinkedNode_t** ppNode, LinkedData_t* pVal){
+        *ppNode = malloc(sizeof(LinkedNode_t));
+        (*ppNode)->Data = *pVal;
+        (*ppNode)->pNext=NULL;
+        (*ppNode)->pPrevious=NULL;
 } 
 /* 
-* @brief Returns pointer to specified linked list entry 
+* @brief Returns pointer to specified linked list node 
 * @param pList pointer to linked list
-* @param EntryIndex Index of the entry whose pointer is returned
+* @param NodeIndex Index of the node whose pointer is returned
 */
-static inline LinkedEntry_t* GetEntryPtr(LinkedList_t* pList, int EntryIndex){
+static inline LinkedNode_t* GetNodePtr(LinkedList_t* pList, int NodeIndex){
         
-    LinkedEntry_t* pCurrent;
+    LinkedNode_t* pCurrent;
     int ReturnIdx;
     int CurrentIdx = 0;
 
     pCurrent = pList->pFirst;  
-    for (CurrentIdx = 0;CurrentIdx<EntryIndex;CurrentIdx++)
+    for (CurrentIdx = 0;CurrentIdx<NodeIndex;CurrentIdx++)
     {
         pCurrent = pCurrent->pNext;
     }
@@ -39,45 +39,45 @@ static inline LinkedEntry_t* GetEntryPtr(LinkedList_t* pList, int EntryIndex){
 }
 /* 
 * @brief Bypasses a specific element in the linked list
-* @details Given a specific E, its previous entry P and
-* its next entry N: 
+* @details Given a specific E, its previous node P and
+* its next node N: 
     * makes P's "next" pointer point to N instead of E
     * makes N's "previous" pointer point to P instead of E
-* some caveats regarding start and end entries apply
+* some caveats regarding start and end nodes apply
 * @param pList Pointer to linked list
-* @param EntryIndex Index of the entry to be bypassed
-* @return Pointer to the bypassed entry
+* @param NodeIndex Index of the node to be bypassed
+* @return Pointer to the bypassed node
 */
-static inline LinkedEntry_t* LinkedListBypassEntry(LinkedList_t* pList,int EntryIndex){
-    LinkedEntry_t* pEntry;
+static inline LinkedNode_t* LinkedListBypassNode(LinkedList_t* pList,int NodeIndex){
+    LinkedNode_t* pNode;
 
-    pEntry =  GetEntryPtr(pList,EntryIndex);
+    pNode =  GetNodePtr(pList,NodeIndex);
     /*Set previous next to current next, unless first element in list, 
-    in which case first entry to current next*/
-    if (EntryIndex != 0){
-        pEntry->pPrevious->pNext = pEntry->pNext;
+    in which case first node to current next*/
+    if (NodeIndex != 0){
+        pNode->pPrevious->pNext = pNode->pNext;
     } else {
-        pList->pFirst = pEntry->pNext;
+        pList->pFirst = pNode->pNext;
     }
-    /*If not last entry, set previous of next to current previous*/
-    if (EntryIndex < pList->EntriesNr-1){
-        pEntry->pNext->pPrevious = pEntry->pPrevious;
+    /*If not last node, set previous of next to current previous*/
+    if (NodeIndex < pList->NodesNr-1){
+        pNode->pNext->pPrevious = pNode->pPrevious;
     }
 
-    return pEntry;
+    return pNode;
 }
 /* 
-* @brief Manages list entries' pointers so a new entry is inserted before a 
+* @brief Manages list nodes' pointers so a new node is inserted before a 
 * specific place in the list (inserts at the end if last index +1 is
-* used in EntryIndex)
+* used in NodeIndex)
 * @param pList Pointer to linked list
-* @param pNewEntry Pointer to new entry
-* @param EntryIndex Index of the entry before which the
+* @param pNewNode Pointer to new node
+* @param NodeIndex Index of the node before which the
 * new one is inserted
 */
-static inline void LinkedListInsertEntry(LinkedList_t* pList,LinkedEntry_t* pNewEntry,int EntryIndex){
+static inline void LinkedListInsertNode(LinkedList_t* pList,LinkedNode_t* pNewNode,int NodeIndex){
    
-    /*(insertion is before old entry)*/
+    /*(insertion is before old node)*/
     /*Example: Middle Insertion into position 1: 
     |A|B|C|  -> |A|I|B|C|
     |0|1|2|  -> |0|1|2|3|*/
@@ -88,36 +88,36 @@ static inline void LinkedListInsertEntry(LinkedList_t* pList,LinkedEntry_t* pNew
     |A|B|C|  -> |A|B|C|I|
     |0|1|2|  -> |0|1|2|3|*/    
    
-    LinkedEntry_t* pPrevious;
-    LinkedEntry_t* pNext;
-    LinkedEntry_t* pLastEntry;
+    LinkedNode_t* pPrevious;
+    LinkedNode_t* pNext;
+    LinkedNode_t* pLastNode;
 
     if (!NON_EMPTY_LIST(pList)){
         //insert at start if list is empty
-        pList->pFirst = pNewEntry;        
-    } else if (EntryIndex == pList->EntriesNr){  
+        pList->pFirst = pNewNode;        
+    } else if (NodeIndex == pList->NodesNr){  
         //insert at the end if input index is max + 1
-        pLastEntry = GetEntryPtr(pList,EntryIndex-1);
-        pLastEntry->pNext = pNewEntry;
-        pNewEntry->pPrevious = pLastEntry;
+        pLastNode = GetNodePtr(pList,NodeIndex-1);
+        pLastNode->pNext = pNewNode;
+        pNewNode->pPrevious = pLastNode;
     } else {
-        pNext = GetEntryPtr(pList,EntryIndex);
+        pNext = GetNodePtr(pList,NodeIndex);
 
-        if (ENTRY_IS_AT_START(pNext)) { 
+        if (NODE_IS_AT_START(pNext)) { 
             /*Inserting at start*/
-            pList->pFirst = pNewEntry;
-            pNewEntry->pNext = pNext;
-            pNewEntry->pNext->pPrevious = pNewEntry; 
+            pList->pFirst = pNewNode;
+            pNewNode->pNext = pNext;
+            pNewNode->pNext->pPrevious = pNewNode; 
         } else {
             /*Inserting in middle*/
-            pNewEntry->pNext = pNext;
-            pNewEntry->pPrevious = pNext->pPrevious;
-            pNewEntry->pPrevious->pNext = pNewEntry;
-            pNewEntry->pNext->pPrevious = pNewEntry;
+            pNewNode->pNext = pNext;
+            pNewNode->pPrevious = pNext->pPrevious;
+            pNewNode->pPrevious->pNext = pNewNode;
+            pNewNode->pNext->pPrevious = pNewNode;
         }        
     }
 
-    pList->EntriesNr++;
+    pList->NodesNr++;
 }
 /* 
 * @brief Initializes linked list
@@ -125,120 +125,120 @@ static inline void LinkedListInsertEntry(LinkedList_t* pList,LinkedEntry_t* pNew
 */
 void LinkedListInit(LinkedList_t* pList){
     if (VALID_PTR(pList)){
-        pList->EntriesNr = 0;
+        pList->NodesNr = 0;
         pList->pFirst = NULL;
     }
 }
 /* 
-* @brief Deletes and frees all entries in a list
+* @brief Deletes and frees all nodes in a list
 * @param pList Pointer to the linked list to be cleared
 */
 void LinkedListClear(LinkedList_t* pList){
-    LinkedEntry_t* pCurrent;
-    LinkedEntry_t* pTemp;
+    LinkedNode_t* pCurrent;
+    LinkedNode_t* pTemp;
     int CurrentIdx = 0;
-    int EntriesToClear;
+    int NodesToClear;
 
     if (VALID_PTR(pList) && NON_EMPTY_LIST(pList)){
         pCurrent = pList->pFirst;  
-        EntriesToClear = pList->EntriesNr;
-        for (CurrentIdx = 0;CurrentIdx<EntriesToClear;CurrentIdx++)
+        NodesToClear = pList->NodesNr;
+        for (CurrentIdx = 0;CurrentIdx<NodesToClear;CurrentIdx++)
         {     
             pTemp = pCurrent;
             pCurrent = pCurrent->pNext;
             free(pTemp);
 
-            pList->EntriesNr--;
+            pList->NodesNr--;
         }
         /*Nothing for list first to point to*/
         pList->pFirst = NULL;
     }
 }
 /*
-* @brief Returns number of entries in the linked list
+* @brief Returns number of nodes in the linked list
 * @param pList Pointer to the linked list
-* @return Number of entries in the linked list
+* @return Number of nodes in the linked list
 */
-int LinkedListGetEntriesNr(LinkedList_t* pList){
-    return pList->EntriesNr;
+int LinkedListGetNodesNr(LinkedList_t* pList){
+    return pList->NodesNr;
 }
 /* 
-* @brief Inserts a new entry with new data before a specific place in the list
-* (inserts at the end if last index +1 is used in EntryIndex)
+* @brief Inserts a new node with new data before a specific place in the list
+* (inserts at the end if last index +1 is used in NodeIndex)
 * @param pList Pointer to linked list
-* @param pData Pointer to data to be added to new inserted entry
-* @param EntryIndex Index of the entry before which the new item is inserted
+* @param pData Pointer to data to be added to new inserted node
+* @param NodeIndex Index of the node before which the new item is inserted
 */
-void LinkedListInsert(LinkedList_t* pList, LinkedData_t* pData,int EntryIndex){
-    LinkedEntry_t* pNewEntry;
+void LinkedListInsert(LinkedList_t* pList, LinkedData_t* pData,int NodeIndex){
+    LinkedNode_t* pNewNode;
     /*To insert at the end of the list, last existing index + 1 is used so it is a valid input*/
-    if (VALID_PTR(pList) && VALID_PTR(pData) && (ENTRY_EXISTS(pList,EntryIndex) || ENTRY_IS_NEW_AT_END(pList,EntryIndex))){
-        CreateLinkedEntry(&pNewEntry,pData);
-        LinkedListInsertEntry(pList,pNewEntry,EntryIndex);
+    if (VALID_PTR(pList) && VALID_PTR(pData) && (NODE_EXISTS(pList,NodeIndex) || NODE_IS_NEW_AT_END(pList,NodeIndex))){
+        CreateLinkedNode(&pNewNode,pData);
+        LinkedListInsertNode(pList,pNewNode,NodeIndex);
     }
 }    
 /* 
-* @brief Inserts a new entry with new data at the start of the linked list
+* @brief Inserts a new node with new data at the start of the linked list
 * @param pList Pointer to linked list
-* @param pData Pointer to data to be added to new inserted entry
+* @param pData Pointer to data to be added to new inserted node
 */
 void LinkedListInsertStart(LinkedList_t* pList, LinkedData_t* pData){
     LinkedListInsert(pList, pData,0);    
 }
 /* 
-* @brief Inserts a new entry with new data at the end of the linked list
+* @brief Inserts a new node with new data at the end of the linked list
 * @param pList Pointer to linked list
-* @param pData Pointer to data to be added to new inserted entry
+* @param pData Pointer to data to be added to new inserted node
 */
 void LinkedListInsertEnd(LinkedList_t* pList, LinkedData_t* pData){
-    LinkedListInsert(pList, pData,pList->EntriesNr);    
+    LinkedListInsert(pList, pData,pList->NodesNr);    
 }
 /* 
-* @brief Reads new data from linked list entry to provided location
+* @brief Reads new data from linked list node to provided location
 * @param pList Pointer to linked list
 * @param pData Pointer to where linked data is copied to
-* @param EntryIndex Index of the list entry to get data from
+* @param NodeIndex Index of the list node to get data from
 */
-void LinkedListGet (LinkedList_t* pList, LinkedData_t* pData, int EntryIndex){  
-    LinkedEntry_t* pEntry;
+void LinkedListGet (LinkedList_t* pList, LinkedData_t* pData, int NodeIndex){  
+    LinkedNode_t* pNode;
 
-    if (VALID_PTR(pList) && VALID_PTR(pData) && NON_EMPTY_LIST(pList) && ENTRY_EXISTS(pList,EntryIndex)){
-        pEntry = GetEntryPtr(pList, EntryIndex);
-        *pData = pEntry->Data;
+    if (VALID_PTR(pList) && VALID_PTR(pData) && NON_EMPTY_LIST(pList) && NODE_EXISTS(pList,NodeIndex)){
+        pNode = GetNodePtr(pList, NodeIndex);
+        *pData = pNode->Data;
     }
 }
 /* 
-* @brief Writes new data to linked list entry from provided location
+* @brief Writes new data to linked list node from provided location
 * @param pList Pointer to linked list
 * @param pData Pointer to where linked data is copied from
-* @param EntryIndex Index of the list entry to set data in
+* @param NodeIndex Index of the list node to set data in
 */
-void LinkedListSet (LinkedList_t* pList, LinkedData_t* pData, int EntryIndex){  
-    LinkedEntry_t* pEntry;
+void LinkedListSet (LinkedList_t* pList, LinkedData_t* pData, int NodeIndex){  
+    LinkedNode_t* pNode;
 
-    if (VALID_PTR(pList) && VALID_PTR(pData) && NON_EMPTY_LIST(pList) && ENTRY_EXISTS(pList,EntryIndex)){
-        pEntry = GetEntryPtr(pList, EntryIndex);
-        pEntry->Data = *pData;
+    if (VALID_PTR(pList) && VALID_PTR(pData) && NON_EMPTY_LIST(pList) && NODE_EXISTS(pList,NodeIndex)){
+        pNode = GetNodePtr(pList, NodeIndex);
+        pNode->Data = *pData;
     }
 }
 /* 
-* @brief Removes entry from list and writes its contents to provided location
+* @brief Removes node from list and writes its contents to provided location
 * @param pList Pointer to linked list
 * @param pData Pointer to where linked data is copied to
-* @param EntryIndex Index of the entry to pop
+* @param NodeIndex Index of the node to pop
 */
-void LinkedListPop(LinkedList_t* pList, LinkedData_t* pData, int EntryIndex){
-    LinkedEntry_t* pEntry;
+void LinkedListPop(LinkedList_t* pList, LinkedData_t* pData, int NodeIndex){
+    LinkedNode_t* pNode;
 
-    if (VALID_PTR(pList) && NON_EMPTY_LIST(pList) && VALID_PTR(pData) && ENTRY_EXISTS(pList,EntryIndex)){
-        pEntry = LinkedListBypassEntry(pList,EntryIndex);
-        *pData = pEntry->Data;
-        free(pEntry); 
-        pList->EntriesNr--;
+    if (VALID_PTR(pList) && NON_EMPTY_LIST(pList) && VALID_PTR(pData) && NODE_EXISTS(pList,NodeIndex)){
+        pNode = LinkedListBypassNode(pList,NodeIndex);
+        *pData = pNode->Data;
+        free(pNode); 
+        pList->NodesNr--;
     }    
 }
 /* 
-* @brief Removes entry from start of list and writes its contents to provided location
+* @brief Removes node from start of list and writes its contents to provided location
 * @param pList Pointer to linked list
 * @param pData Pointer to where linked data is copied to
 */
@@ -246,38 +246,38 @@ void LinkedListPopStart(LinkedList_t* pList, LinkedData_t* pData){
    LinkedListPop(pList,pData,0); 
 }
 /* 
-* @brief Removes entry from end of list and writes its contents to provided location
+* @brief Removes node from end of list and writes its contents to provided location
 * @param pList Pointer to linked list
 * @param pData Pointer to where linked data is copied to
 */
 void LinkedListPopEnd(LinkedList_t* pList, LinkedData_t* pData){
-   LinkedListPop(pList,pData,pList->EntriesNr-1); 
+   LinkedListPop(pList,pData,pList->NodesNr-1); 
 }
 /* 
-* @brief Removes entry from list
+* @brief Removes node from list
 * @param pList Pointer to linked list
-* @param EntryIndex Index of the entry to remove
+* @param NodeIndex Index of the node to remove
 */
-void LinkedListRemove(LinkedList_t* pList, int EntryIndex){
-    LinkedEntry_t* pEntry;
+void LinkedListRemove(LinkedList_t* pList, int NodeIndex){
+    LinkedNode_t* pNode;
 
-    if (VALID_PTR(pList) && NON_EMPTY_LIST(pList) && ENTRY_EXISTS(pList,EntryIndex)){
-        pEntry = LinkedListBypassEntry(pList,EntryIndex);
-        free(pEntry); 
-        pList->EntriesNr--;
+    if (VALID_PTR(pList) && NON_EMPTY_LIST(pList) && NODE_EXISTS(pList,NodeIndex)){
+        pNode = LinkedListBypassNode(pList,NodeIndex);
+        free(pNode); 
+        pList->NodesNr--;
     }    
 }
 /* 
-* @brief Removes entry from start of list
+* @brief Removes node from start of list
 * @param pList Pointer to linked list
 */
 void LinkedListRemoveStart(LinkedList_t* pList){
    LinkedListRemove(pList,0); 
 }
 /* 
-* @brief Removes entry from end of list
+* @brief Removes node from end of list
 * @param pList Pointer to linked list
 */
 void LinkedListRemoveEnd(LinkedList_t* pList){
-   LinkedListRemove(pList,pList->EntriesNr-1); 
+   LinkedListRemove(pList,pList->NodesNr-1); 
 }

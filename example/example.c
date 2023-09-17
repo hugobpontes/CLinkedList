@@ -5,12 +5,12 @@
 void PrintList(LinkedList_t* pList){
   printf("List: ");
   LinkedData_t PrintVal;
-  int EntriesNr = pList->EntriesNr;
-  for (int idx = 0;idx<EntriesNr;idx++){
+  int NodesNr = pList->NodesNr;
+  for (int idx = 0;idx<NodesNr;idx++){
     LinkedListGet(pList,&PrintVal,idx);
     printf("[%d]",PrintVal);
   }
-  printf("(%d Elements)\n",LinkedListGetEntriesNr(pList));
+  printf("(%d Elements)\n",LinkedListGetNodesNr(pList));
 }
 
 int main (){
